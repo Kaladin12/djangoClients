@@ -1,0 +1,71 @@
+{% extends 'base.html'%}
+
+
+
+{% block body %}
+
+<ul>
+	{% csrf_token %}
+	{% if sr %}
+	<table class = "table table-sm table-bordered">
+		<thead>
+			<tr>
+				<td></td>
+				<td>ID</td>
+				<td>IDCliente</td>
+				<td>Nombre <span class="glyphicon glyphicon-search"></span> </td>
+				<td>Dirección</td>
+				<td>Colonia</td>
+				<td>Ciudad</td>
+				<td>Estado</td>
+				<td>Tel.</td>
+				<td>Tel.</td>
+				<td>Correo</td>
+				<td>Rec. Mens.</td>
+				<td>Monto</td>
+				<td>Moneda</td>
+				<td>Fecha Reg.</td>
+				<td>Giro</td>
+				<td>Cuota Mens. Pesos</td>
+				<td>Cuota Mens. Dlls</td>
+				<td>Cuota Semestral</td>
+				<td>Cuota Anual</td>
+			</tr>
+		</thead>
+	
+		<tbody>
+	
+			{% for item in sr %}
+	
+				<tr>
+					<td>
+						<a href="{% url 'editClient' item.pk %}" class="btn btn-warning btn-sm">Editar</a>
+					</td>
+					<td>{{ item.pk }}</td>
+					<td>{{ item.IDCLIENTE }}</td>
+					<td>{{ item.NOMBRE }}</td>
+					<td>{{ item.DIRECCION_FISICA }}</td>
+					<td>{{ item.COLONIA }}</td>
+					<td>{{ item.CIUDAD }}</td>
+					<td>{{ item.ESTADO }}</td>
+					<td>{{ item.TELEFONO1 }}</td>
+					<td>{{ item.TELEFONO2 }}</td>
+					<td>{{ item.EMAIL }}</td>
+					<td>{{ item.RECOLECCIONES_MENSUALES }}</td>
+					<td>{{ item.MONTO }}</td>
+					<td>{{ item.MONEDA }}</td>
+					<td>{{ item.FECHA_REGISTRO }}</td>
+					<td>{{ item.GIRO }}</td>
+					<td>{{ item.CUOTA_MENSUAL_PESOS }}</td>
+					<td>{{ item.CUOTA_MENSUAL_DLLS }}</td>
+					<td>{{ item.CUOTA_SEMESTRAL }}</td>
+					<td>{{ item.CUOTA_ANUAL }}</td>
+			</tr>
+			{%endfor%}
+		</tbody>
+	
+	</table>
+	{% endif %}	
+</ul>
+
+{% endblock %}
