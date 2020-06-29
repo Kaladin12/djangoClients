@@ -6,7 +6,11 @@
 
 <ul>
 	{% csrf_token %}
-	{% if sr %}
+	{% if sr == "No hay resultados" %}
+	<h1>
+	<p>No hay resultados</p>
+</h1>
+	{% elif sr %}
 	<table class = "table table-sm table-bordered">
 		<thead>
 			<tr>

@@ -6,9 +6,12 @@ from django.views import View
 from django.views.generic import ListView, DetailView
 from django.db.models import Q
 from .filters import *
+from django.http import HttpResponse
+from .utils import render_to_pdf
+import datetime
 
 
-# Create your views here.
+
 def index(request):
 	return render(request, 'index.html')
 	
@@ -21,18 +24,22 @@ def displayClients(request):
 
 	return render(request, 'index.html', context)
 
+searchTerms = ""
+
 def search(request):
+
 	print(request.method == 'POST' )
 	if request.method == 'POST':
 		queryRequested = request.POST['content']
 		if queryRequested:
-			query = cliente.objects.filter(Q(NOMBRE__icontains = queryRequested))
+			query = cliente.objects.filter(Q(NOMBRE__icontains = queryRequested) | Q(DIRECCION_FISICA__icontains = queryRequested) | Q(CIUDAD__icontains = queryRequested) | Q(EMAIL__icontains = queryRequested))
 			if query:
-				return render(request, 'search.html', {'sr': query})
+
+				return render(request, 'search.html', {'sr': query, 'content': queryRequested})
 			else:
-				return render(request, 'search.html', 'No hay resultados')
+				return render(request, 'search.html', {'sr':'No hay resultados'})
 	else:
-		return redirect('index')
+		return render('index')
 
 """class clientView(ListView):
 	model = cliente
@@ -72,3 +79,17 @@ def searchClient(request, newSearch):
 		'items': items
 	}
 	return render(request, 'showresults.html', context)
+"""
+def get(request):
+	print(searchTerms)
+	queryRequested = searchTerms
+	query = cliente.objects.filter(Q(NOMBRE__icontains = queryRequested) | Q(DIRECCION_FISICA__icontains = queryRequested) | Q(CIUDAD__icontains = queryRequested) | Q(EMAIL__icontains = queryRequested))
+	lista = {}
+	if query:
+		for item in query:
+			lista[item.IDCLIENTE] = ({item.IDCLIENTE, item.NOMBRE, item.DIRECCION_FISICA, item.EMAIL})
+		print(lista)
+		pdf = render_to_pdf('invoice.html', lista)
+		return HttpResponse(pdf, content_type='application/pdf')
+	else:
+		return render(request, 'search.html', {'sr':'No hay resultados'})"""
